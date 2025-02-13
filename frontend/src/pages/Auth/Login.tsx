@@ -57,11 +57,11 @@ export default function Login() {
             <form onSubmit={handleLogin} className={styles.form} onInput={handlePreventSubmit}>
                 <h2>{language?.login}</h2>
                 <div className={styles.wrapInput}>
-                    <input name='email'
+                    <input name='username'
                         autoFocus
                         className={css(appStyles.input, styles.input)}
-                        type='email'
-                        placeholder={language?.email}
+                        type='text'
+                        placeholder={language?.username}
                     ></input>
                 </div>
                 <div className={styles.wrapInput}>

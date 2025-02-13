@@ -24,8 +24,6 @@ class IndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'subject_id' => ['required', 'integer'],
-            'chapter_id' => ['nullable', 'integer'],
             'search' => ['nullable', 'string'],
         ];
     }

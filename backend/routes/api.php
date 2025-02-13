@@ -1,18 +1,12 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\ChapterController;
-use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\ExamController;
 use App\Http\Controllers\Api\ExamResultController;
-use App\Http\Controllers\Api\FacultyController;
 use App\Http\Controllers\Api\QuestionController;
 use App\Http\Controllers\Api\RolePermissionController;
-use App\Http\Controllers\Api\SchoolClassController;
-use App\Http\Controllers\Api\SemesterController;
 use App\Http\Controllers\Api\SettingController;
-use App\Http\Controllers\Api\SubjectController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -66,42 +60,6 @@ Route::prefix('/dashboard')->middleware(AUTH_MIDDLEWARES)
         Route::get('/', 'index');
     });
 
-Route::prefix('/school-classes')->middleware(AUTH_MIDDLEWARES)
-    ->controller(SchoolClassController::class)->group(function () {
-        Route::get('/complete', 'autocomplete');
-        Route::get('/{id}', 'show');
-        Route::put('/{id}', 'update');
-        Route::get('/', 'index');
-        Route::post('/', 'store');
-        Route::delete('/', 'destroy');
-    });
-
-Route::prefix('/faculties')->middleware(AUTH_MIDDLEWARES)
-    ->controller(FacultyController::class)->group(function () {
-        Route::get('/complete', 'autocomplete');
-        Route::get('/{id}', 'show');
-        Route::put('/{id}', 'update');
-        Route::get('/', 'index');
-        Route::post('/', 'store');
-        Route::delete('/', 'destroy');
-    });
-
-Route::prefix('/subjects')->middleware(AUTH_MIDDLEWARES)
-    ->controller(SubjectController::class)->group(function () {
-        Route::get('/complete', 'autocomplete');
-        Route::get('/{id}', 'show');
-        Route::put('/{id}', 'update');
-        Route::delete('/{id}', 'destroy');
-        Route::get('/', 'index');
-        Route::post('/', 'store');
-    });
-
-Route::prefix('/chapters')->middleware(AUTH_MIDDLEWARES)
-    ->controller(ChapterController::class)->group(function () {
-        Route::put('/{id}', 'update');
-        Route::delete('/{id}', 'destroy');
-        Route::post('/', 'store');
-    });
 
 Route::prefix('/role-permissions')->middleware(AUTH_MIDDLEWARES)
     ->controller(RolePermissionController::class)->group(function () {
@@ -120,25 +78,6 @@ Route::prefix('/questions')->middleware(AUTH_MIDDLEWARES)
         Route::post('/', 'store');
     });
 
-Route::prefix('/semesters')->middleware(AUTH_MIDDLEWARES)
-    ->controller(SemesterController::class)->group(function () {
-        Route::get('/complete', 'autocomplete');
-        Route::get('/{id}', 'show');
-        Route::put('/{id}', 'update');
-        Route::delete('/{id}', 'destroy');
-        Route::get('/', 'index');
-        Route::post('/', 'store');
-    });
-
-Route::prefix('/courses')->middleware(AUTH_MIDDLEWARES)
-    ->controller(CourseController::class)->group(function () {
-        Route::get('/{id}', 'show');
-        Route::put('/{id}', 'update');
-        Route::delete('/{id}', 'destroy');
-        Route::put('/{id}/students', 'updateStudents');
-        Route::get('/', 'index');
-        Route::post('/', 'store');
-    });
 
 Route::prefix('/exams')->middleware(AUTH_MIDDLEWARES)
     ->controller(ExamController::class)->group(function () {

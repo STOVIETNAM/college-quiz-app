@@ -13,8 +13,6 @@ import {
     RiAddFill
 } from 'react-icons/ri';
 import { Navigate, useSearchParams } from 'react-router-dom';
-import { apiAutoCompleteFaculty, apiGetFacultyById } from '~api/faculty';
-import { apiAutoCompleteSchoolClass, apiGetSchoolClassById } from '~api/school-class';
 import { apiDeleteUserByIds, apiGetUsersByType, apiImportUsers } from '~api/user';
 import CustomDataList from '~components/CustomDataList';
 import CustomSelect from '~components/CustomSelect';
@@ -33,9 +31,6 @@ import CreateUser from './components/CreateUser';
 import ExportUsers from './components/ExportUsers';
 import UsersTable from './components/UsersTable';
 
-const schoolClassFilterKey = 'school_class_id';
-const facultyFilterKey = 'faculty_id';
-
 type UsersProps = {
     role: RoleName;
 };
@@ -52,12 +47,6 @@ export default function Users({
     const [searchParams, setSearchParams] = useSearchParams();
     const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
     const queryDebounce = useDebounce(searchQuery);
-    const [queryClass, setQueryClass] = useState('');
-    const [queryFaculty, setQueryFaculty] = useState('');
-    const debounceQueryClass = useDebounce(queryClass, AUTO_COMPLETE_DEBOUNCE);
-    const debounceQueryFaculty = useDebounce(queryFaculty, AUTO_COMPLETE_DEBOUNCE);
-    const initClass = useRef(searchParams.get(schoolClassFilterKey) || '');
-    const initFaculty = useRef(searchParams.get(facultyFilterKey) || '');
     const queryClient = useQueryClient();
     const queryData = useQuery({
         queryKey: [
@@ -67,8 +56,6 @@ export default function Users({
                 page: searchParams.get('page') || '1',
                 perPage: searchParams.get('per_page') || '10',
                 search: queryDebounce,
-                facultyId: searchParams.get(facultyFilterKey) || undefined,
-                schoolClassId: searchParams.get(schoolClassFilterKey) || undefined
             }
         ],
         queryFn: () => apiGetUsersByType({
@@ -76,31 +63,10 @@ export default function Users({
             page: Number(searchParams.get('page')),
             perPage: Number(searchParams.get('per_page')),
             search: queryDebounce,
-            facultyId: searchParams.get(facultyFilterKey) || undefined,
-            schoolClassId: searchParams.get(schoolClassFilterKey) || undefined
         }),
         enabled: permissions.has('user_view')
     });
-    const classQueryData = useQuery({
-        queryKey: [QUERY_KEYS.AUTO_COMPLETE_SCHOOL_CLASS, { search: debounceQueryClass }],
-        queryFn: () => apiAutoCompleteSchoolClass(debounceQueryClass),
-        enabled: debounceQueryClass ? true : false
-    });
-    const initClassQueryData = useQuery({
-        queryKey: [QUERY_KEYS.SCHOOL_CLASS_DETAIL, { id: initClass.current }],
-        queryFn: () => apiGetSchoolClassById(initClass.current),
-        enabled: initClass.current ? true : false,
-    });
-    const initFacultyQueryData = useQuery({
-        queryKey: [QUERY_KEYS.FACULTY_DETAIL, { id: initFaculty.current }],
-        queryFn: () => apiGetFacultyById(initFaculty.current),
-        enabled: initFaculty.current ? true : false,
-    });
-    const facultyQueryData = useQuery({
-        queryKey: [QUERY_KEYS.AUTO_COMPLETE_FACULTY, { search: debounceQueryFaculty }],
-        queryFn: () => apiAutoCompleteFaculty(debounceQueryFaculty),
-        enabled: debounceQueryFaculty ? true : false
-    });
+
     const importFunction = async (file: File) => {
         return apiImportUsers(file, role);
     };
@@ -128,13 +94,11 @@ export default function Users({
     }, [queryDebounce, searchParams, setSearchParams]);
     useEffect(() => {
         if (language) {
-            if (role === 'student') appTitle.setAppTitle(language.student);
-            if (role === 'teacher') appTitle.setAppTitle(language.teacher);
+            if (role === 'employee') appTitle.setAppTitle(language.student);
+            if (role === 'manager') appTitle.setAppTitle(language.teacher);
         }
     }, [appTitle, language, role]);
     if (!permissions.has('user_view')) return <Navigate to='/' />;
-    if (initClass.current && !initClassQueryData.data) return null;
-    if (initFaculty.current && !initFacultyQueryData.data) return null;
     return (
         <>
             {showCreatePopUp === true ?
@@ -157,7 +121,7 @@ export default function Users({
                     langYes={language?.langYes}
                     langNo={language?.langNo}
                 /> : null}
-            {showImportPopUp === true ?
+            {/* {showImportPopUp === true ?
                 <ImportData
                     title={[
                         language?.import,
@@ -169,7 +133,7 @@ export default function Users({
                     importFunction={importFunction}
                     setShowPopUp={setShowImportPopUp}
                     onMutateSuccess={onMutateSuccess}
-                /> : null}
+                /> : null} */}
             <main className={appStyles.dashboard}>
                 {
                     permissions.hasAnyFormList(['user_view', 'user_create', 'user_update', 'user_delete'])
@@ -262,7 +226,7 @@ export default function Users({
                                 className={styles.customSelect}
                             />
                         </div>
-                        {role === 'student' ?
+                        {/* {role === 'employee' ?
                             <div style={{ zIndex: 1 }} className={styles.wrapInputItem}>
                                 <label htmlFor={schoolClassFilterKey}>{language?.class}</label>
                                 <CustomDataList
@@ -293,7 +257,7 @@ export default function Users({
                                     }}
                                 />
                             </div>
-                            : role === 'teacher' ?
+                            : role === 'manager' ?
                                 <div style={{ zIndex: 1 }} className={styles.wrapInputItem}>
                                     <label htmlFor={facultyFilterKey}>{language?.faculty}</label>
                                     <CustomDataList
@@ -325,7 +289,7 @@ export default function Users({
                                     />
                                 </div>
                                 : null
-                        }
+                        } */}
                         <div className={styles.wrapInputItem}>
                             <label>{language?.filter.search}</label>
                             <input

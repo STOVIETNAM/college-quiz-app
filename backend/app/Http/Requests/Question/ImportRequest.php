@@ -24,8 +24,6 @@ class ImportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'subject_id' => ['required', 'integer'],
-            'chapter_id' => ['required', 'integer'],
             'file' => ['required', 'mimes:docx,doc'],
         ];
     }

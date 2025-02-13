@@ -25,8 +25,6 @@ class StoreRequest extends FormRequest
     {
         $maxIndex = is_countable($this->options) ? count($this->options) - 1 : 0;
         return [
-            'subject_id' => ['required'],
-            'chapter_id' => ['nullable'],
             'level' => ['required', 'in:easy,medium,hard,expert'],
             'content' => ['required'],
             'options' => ['required', 'array', 'min:2'],

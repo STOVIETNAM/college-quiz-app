@@ -24,7 +24,7 @@ class ImportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role' => ['required', 'string', 'in:student,teacher,admin'],
+            'role' => ['required', 'string', 'in:employee,manager,admin'],
             'file' => ['required', 'mimes:xlsx,xls'],
         ];
     }

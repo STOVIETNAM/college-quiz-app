@@ -24,7 +24,8 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role' => ['required', 'string', 'in:student,teacher,admin'],
+            'role' => ['required', 'string', 'in:employee,manager,admin'],
+            'username' => ['required', 'string', 'unique:users', 'max:255'],
             'shortcode' => ['required', 'string', 'unique:users', 'max:255', 'alpha_dash:ascii'],
             'email' => ['required', 'email', 'unique:users'],
             'first_name' => ['required', 'max:255'],
@@ -33,8 +34,8 @@ class StoreRequest extends FormRequest
             'gender' => ['required', 'in:male,female'],
             'address' => ['required', 'string', 'max:255'],
             'birth_date' => ['required', 'date', 'before:today'],
-            'school_class_id' => ['required_if:role,student', 'max:255'],
-            'faculty_id' => ['required_if:role,teacher', 'max:255'],
+            'school_class_id' => ['required_if:role,employee', 'max:255'],
+            'faculty_id' => ['required_if:role,manager', 'max:255'],
             'password' => ['required', 'min:8']
         ];
     }

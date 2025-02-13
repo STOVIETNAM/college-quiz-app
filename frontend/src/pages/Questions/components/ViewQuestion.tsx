@@ -18,13 +18,12 @@ import YesNoPopUp from '~components/YesNoPopUp';
 import QUERY_KEYS from '~constants/query-keys';
 import useAppContext from '~hooks/useAppContext';
 import useLanguage from '~hooks/useLanguage';
-import { SubjectDetail } from '~models/subject';
 import createFormUtils from '~utils/createFormUtils';
 import css from '~utils/css';
 
 type ViewQuestionProps = {
     id: number;
-    subjectDetail: SubjectDetail;
+
     onMutateSuccess: () => void;
     setShowPopUp: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -36,7 +35,7 @@ type Option = {
 
 export default function ViewQuestion({
     id,
-    subjectDetail,
+
     onMutateSuccess,
     setShowPopUp
 }: ViewQuestionProps) {
@@ -143,35 +142,8 @@ export default function ViewQuestion({
                                         onInput={(e) => { formUtils.handleOnInput(e); }}
                                         className={globalStyles.formData}>
                                         <input name='true_option' readOnly hidden value={options.findIndex(option => option.key === trueOptionKey)} />
-                                        <input name='subject_id' readOnly hidden value={subjectDetail.id} />
                                         <div className={globalStyles.groupInputs}>
-                                            <div style={{ zIndex: 2 }} className={globalStyles.wrapItem}>
-                                                <label htmlFor='chapter_id'>{language?.chapter}</label>
-                                                <CustomSelect
-                                                    name='chapter_id'
-                                                    disabled={disabledUpdate}
-                                                    defaultOption={(() => {
-                                                        const chapter = subjectDetail.chapters.find(item => item.id == queryData.data.chapterId);
-                                                        return {
-                                                            label: chapter?.name || language?.unselect,
-                                                            value: String(chapter?.id || '')
-                                                        };
-                                                    })()
-                                                    }
-                                                    options={
-                                                        [
-                                                            {
-                                                                label: language?.unselect,
-                                                                value: ''
-                                                            },
-                                                            ...subjectDetail.chapters.map(chapter => ({
-                                                                value: String(chapter.id),
-                                                                label: `${chapter.chapterNumber}. ${chapter.name}`
-                                                            }))]
-                                                    }
-                                                    className={globalStyles.customSelect}
-                                                />
-                                            </div>
+
                                             <div className={globalStyles.wrapItem}>
                                                 <label className={appStyles.required}>{language?.level}</label>
                                                 <CustomSelect

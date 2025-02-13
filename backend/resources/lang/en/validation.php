@@ -44,6 +44,7 @@ return [
         'exam_time' => 'exam time',
         'question_counts' => 'questions count',
         'cancellation_reason' => 'cancellation reason',
+        'username' => 'username',
     ],
     'custom' => [
         'role' => [

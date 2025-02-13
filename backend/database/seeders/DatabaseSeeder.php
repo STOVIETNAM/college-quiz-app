@@ -12,21 +12,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            RoleSeeder::class,
-            PermissionSeeder::class,
-            RolePermissionSeeder::class,
-            AdminSeeder::class,
-            SettingSeeder::class,
-        ]);
+        // $this->call([
+        //     RoleSeeder::class,
+        //     PermissionSeeder::class,
+        //     RolePermissionSeeder::class,
+        //     AdminSeeder::class,
+        //     SettingSeeder::class,
+        // ]);
 
         if (config('custom.app.demo')) {
             $this->call([
-                FacultySeeder::class,
-                ShoolClassSeeder::class,
-                SubjectSeeder::class,
-                ChapterSeeder::class,
-                StudentSeeder::class,
+                // StudentSeeder::class,
                 TeacherSeeder::class,
                 QuestionSeeder::class,
             ]);

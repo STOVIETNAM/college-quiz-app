@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\SchoolClass;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -18,10 +17,9 @@ class StudentSeeder extends Seeder
         $students = file_get_contents(base_path('/dump/students.json'));
         $students = json_decode($students);
         foreach ($students as $student) {
-            $school_class_id = SchoolClass::where('shortcode', $student->school_class)->pluck('id')->first();
-            $student = collect($student)->except(['school_class', 'faculty'])->toArray();
-            $student['school_class_id'] = $school_class_id;
+            $student = collect($student)->toArray();
             $student['password'] = Hash::make('123456789');
+            $student['username'] = 'student_' . uniqid();
             User::create($student);
         }
     }

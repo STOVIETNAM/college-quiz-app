@@ -24,8 +24,8 @@ class GetByTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role' => ['required', 'string', 'in:student,teacher,admin'],
-            'per_page' => ['required', 'integer', 'min:10','max:100'],
+            'role' => ['required', 'string', 'in:employee,manager,admin'],
+            'per_page' => ['required', 'integer', 'min:10', 'max:100'],
             'page' => ['nullable', 'integer'],
             'search' => ['nullable', 'string'],
             'school_class_id' => ['nullable', 'integer'],

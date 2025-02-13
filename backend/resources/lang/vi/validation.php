@@ -44,6 +44,7 @@ return [
         'exam_time' => 'thời gian thi',
         'question_counts' => 'số lượng câu hỏi',
         'cancellation_reason' => 'Lý do hủy',
+        'username' => 'tên đăng nhập',
     ],
     'custom' => [
         'role' => [

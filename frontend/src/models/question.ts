@@ -4,8 +4,6 @@ export type Question = {
     id: number;
     createdByUserId: number | null;
     lastUpdatedByUserId: number | null;
-    subjectId: number;
-    chapterId?: number | null;
     level: QuestionLevel;
     content: string;
     createdAt: string;
@@ -14,8 +12,6 @@ export type Question = {
 };
 
 export type QueryQuestionType = {
-    subjectId: string | number;
-    chapterId: string | number | null;
     search?: string;
 };
 

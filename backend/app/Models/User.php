@@ -88,6 +88,7 @@ class User extends Authenticatable
     protected $fillable = [
         'role_id',
         'shortcode',
+        'username',
         'first_name',
         'last_name',
         'email',
@@ -95,47 +96,21 @@ class User extends Authenticatable
         'gender',
         'address',
         'birth_date',
-        'school_class_id',
-        'faculty_id',
         'is_active',
         'email_verified_at',
         'password',
         'remember_token'
     ];
 
-    public function faculty()
-    {
-        return $this->belongsTo(Faculty::class);
-    }
 
     public function role()
     {
         return $this->belongsTo(Role::class);
     }
 
-    public function school_class()
-    {
-        return $this->belongsTo(SchoolClass::class);
-    }
-
-    public function courses()
-    {
-        return $this->hasMany(Course::class, 'teacher_id');
-    }
-
-    public function enrollments()
-    {
-        return $this->hasMany(Enrollment::class, 'student_id');
-    }
-
     public function exam_questions_answers()
     {
         return $this->hasMany(ExamQuestionsAnswer::class);
-    }
-
-    public function faculties()
-    {
-        return $this->hasMany(Faculty::class, 'leader_id');
     }
 
     public function questions()
@@ -168,9 +143,9 @@ class User extends Authenticatable
         return $this->role_id == RoleType::ADMIN->value;
     }
 
-    public function isTeacher()
+    public function isManager()
     {
-        return $this->role_id == RoleType::TEACHER->value;
+        return $this->role_id == RoleType::MANAGER->value;
     }
 
     public function hasPermission(string|PermissionType $name)

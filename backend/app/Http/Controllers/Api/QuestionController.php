@@ -25,10 +25,7 @@ class QuestionController extends Controller
         abort_if(!$user->hasPermission(PermissionType::QUESTION_VIEW), 403);
 
         try {
-            $data = Question::where('subject_id', '=', $request->subject_id);
-            if ($request->chapter_id != null) {
-                $data = $data->where('chapter_id', '=', $request->chapter_id);
-            }
+            $data = Question::select('*');
             if ($request->search != null) {
                 $data = $data->whereFullText(Question::FULLTEXT, $request->search);
             }
@@ -54,12 +51,6 @@ class QuestionController extends Controller
 
         DB::beginTransaction();
         try {
-            $is_chapter_exists = Chapter::where('subject_id', $question_data['subject_id'])
-                ->where('id', $question_data['chapter_id'])
-                ->exists();
-            if (!$is_chapter_exists) {
-                return Reply::error(trans('app.errors.404'), 404);
-            }
             $question_data['content'] = DOMStringHelper::processImagesFromDOM($question_data['content']);
             $question = Question::create($question_data);
 
@@ -110,13 +101,6 @@ class QuestionController extends Controller
             $data['content'] = DOMStringHelper::processImagesFromDOM($data['content']);
 
             $target_question = Question::findOrFail($id);
-
-            $is_chapter_exists = Chapter::where('subject_id', $target_question->subject_id)
-                ->where('id', $data['chapter_id'])
-                ->exists();
-            if (!$is_chapter_exists) {
-                return Reply::error(trans('app.errors.404'), 404);
-            }
 
             $target_question->update($data);
             $question_options = $target_question->question_options;
@@ -178,9 +162,6 @@ class QuestionController extends Controller
 
         DB::beginTransaction();
         try {
-            $subject = Subject::findOrFail($request->subject_id);
-            $chapter = $subject->chapters()->findOrFail($request->chapter_id);
-
             $php_word = IOFactory::load($file_path);
             $parsed_data = [];
             $current_question = null;
@@ -270,9 +251,7 @@ class QuestionController extends Controller
                         $current_question = [
                             'content' => trim($question_match[2]),
                             'level' => $question_match[1],
-                            'subject_id' => $subject->id,
-                            'chapter_id' => $chapter->id,
-                            'answers' => [],
+                               'answers' => [],
                         ];
                     } elseif (preg_match('/^ans\s*(.+)$/i', $text, $answer_match)) {
                         // Add answers to the current question

@@ -2,6 +2,6 @@
 
 return [
     'admin' => 'Quản trị viên',
-    'teacher' => 'Giáo viên',
-    'student' => 'Học sinh',
+    'manager' => 'Quản lý',
+    'employee' => 'Nhân viên',
 ];

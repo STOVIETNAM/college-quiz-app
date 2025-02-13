@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Faculty;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,11 +18,10 @@ class TeacherSeeder extends Seeder
         $teachers = json_decode($teachers);
         $index = 1;
         foreach ($teachers as $teacher) {
-            $faculty_id = Faculty::inRandomOrder()->pluck('id')->first();
-            $teacher = collect($teacher)->except(['school_class', 'faculty'])->toArray();
+            $teacher = collect($teacher)->toArray();
             $teacher['password'] = Hash::make('123456789');
-            $teacher['faculty_id'] = $faculty_id;
             $teacher['shortcode'] = 'GVDH' . str_pad($index, 8, '0', STR_PAD_LEFT);
+            $teacher['username'] = 'teacher_' . uniqid();
             User::create($teacher);
             $index += 1;
         }

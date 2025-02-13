@@ -9,8 +9,8 @@
         "gender": "female",
         "address": "Hà Nội, Việt Nam",
         "birth_date": "1985-05-15",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -25,8 +25,8 @@
         "gender": "female",
         "address": "Hồ Chí Minh, Việt Nam",
         "birth_date": "1978-09-22",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -41,8 +41,8 @@
         "gender": "male",
         "address": "Đà Nẵng, Việt Nam",
         "birth_date": "1980-12-08",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -57,8 +57,8 @@
         "gender": "male",
         "address": "Hải Phòng, Việt Nam",
         "birth_date": "1975-07-17",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -73,8 +73,8 @@
         "gender": "female",
         "address": "Nha Trang, Việt Nam",
         "birth_date": "1982-03-25",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -89,8 +89,8 @@
         "gender": "male",
         "address": "Huế, Việt Nam",
         "birth_date": "1972-11-10",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -105,8 +105,8 @@
         "gender": "female",
         "address": "Cần Thơ, Việt Nam",
         "birth_date": "1987-06-18",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -121,8 +121,8 @@
         "gender": "male",
         "address": "Vũng Tàu, Việt Nam",
         "birth_date": "1988-09-05",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -137,8 +137,8 @@
         "gender": "female",
         "address": "Quy Nhơn, Việt Nam",
         "birth_date": "1983-12-30",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -153,8 +153,8 @@
         "gender": "male",
         "address": "Cà Mau, Việt Nam",
         "birth_date": "1979-04-02",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -169,8 +169,8 @@
         "gender": "female",
         "address": "Hà Nội, Việt Nam",
         "birth_date": "1986-08-20",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -185,8 +185,8 @@
         "gender": "male",
         "address": "Hồ Chí Minh, Việt Nam",
         "birth_date": "1981-11-12",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -201,8 +201,8 @@
         "gender": "female",
         "address": "Đà Nẵng, Việt Nam",
         "birth_date": "1984-04-28",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -217,8 +217,8 @@
         "gender": "male",
         "address": "Hải Phòng, Việt Nam",
         "birth_date": "1989-07-05",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -233,8 +233,8 @@
         "gender": "female",
         "address": "Nha Trang, Việt Nam",
         "birth_date": "1980-02-15",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -249,8 +249,8 @@
         "gender": "male",
         "address": "Huế, Việt Nam",
         "birth_date": "1973-10-08",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -265,8 +265,8 @@
         "gender": "female",
         "address": "Cần Thơ, Việt Nam",
         "birth_date": "1986-06-22",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -281,8 +281,8 @@
         "gender": "male",
         "address": "Vũng Tàu, Việt Nam",
         "birth_date": "1987-09-18",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -297,8 +297,8 @@
         "gender": "female",
         "address": "Quy Nhơn, Việt Nam",
         "birth_date": "1981-03-10",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -313,8 +313,8 @@
         "gender": "male",
         "address": "Cà Mau, Việt Nam",
         "birth_date": "1984-04-02",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -329,8 +329,8 @@
         "gender": "male",
         "address": "Hồ Chí Minh, Việt Nam",
         "birth_date": "1985-08-15",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -345,8 +345,8 @@
         "gender": "female",
         "address": "Hà Nội, Việt Nam",
         "birth_date": "1982-05-22",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -361,8 +361,8 @@
         "gender": "male",
         "address": "Đà Nẵng, Việt Nam",
         "birth_date": "1987-10-18",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -377,8 +377,8 @@
         "gender": "female",
         "address": "Hải Phòng, Việt Nam",
         "birth_date": "1984-03-30",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -393,8 +393,8 @@
         "gender": "male",
         "address": "Nha Trang, Việt Nam",
         "birth_date": "1988-09-05",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -409,8 +409,8 @@
         "gender": "female",
         "address": "Huế, Việt Nam",
         "birth_date": "1986-06-15",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -425,8 +425,8 @@
         "gender": "male",
         "address": "Cần Thơ, Việt Nam",
         "birth_date": "1983-11-10",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -441,8 +441,8 @@
         "gender": "female",
         "address": "Vũng Tàu, Việt Nam",
         "birth_date": "1981-07-18",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -457,8 +457,8 @@
         "gender": "male",
         "address": "Quy Nhơn, Việt Nam",
         "birth_date": "1989-04-02",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -473,8 +473,8 @@
         "gender": "female",
         "address": "Cà Mau, Việt Nam",
         "birth_date": "1980-12-30",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -489,8 +489,8 @@
         "gender": "female",
         "address": "Hà Nội, Việt Nam",
         "birth_date": "1986-08-20",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null
@@ -505,8 +505,8 @@
         "gender": "male",
         "address": "Hồ Chí Minh, Việt Nam",
         "birth_date": "1985-08-15",
-        "school_class": null,
-        "faculty": null,
+
+
         "is_active": 1,
         "email_verified_at": null,
         "password": null

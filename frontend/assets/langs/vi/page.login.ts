@@ -1,6 +1,6 @@
 export default {
     login: 'Đăng nhập',
-    email: 'Email',
+    username: 'Tên đăng nhập',
     password: 'Mật khẩu',
     forgotPassword: 'Quên mật khẩu?',
     demoAccount: 'Tài khoản thử nghiệm'

@@ -30,7 +30,7 @@ class AuthController extends Controller
                 'user' => null,
                 'token' => null
             ];
-            $data->user = User::with('role')->where('email', '=', $request->email)->first();
+            $data->user = User::with('role')->where('username', '=', $request->username)->first();
             if (!$data->user) {
                 return Reply::error(trans('auth.errors.email_not_found'), 404);
             }

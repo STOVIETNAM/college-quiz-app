@@ -9,24 +9,19 @@ import {
 } from 'react-icons/io';
 import { RxCross2 } from 'react-icons/rx';
 import { apiImportQuestions } from '~api/question';
-import CustomSelect from '~components/CustomSelect';
 import Loading from '~components/Loading';
 import useLanguage from '~hooks/useLanguage';
-import { Option } from '~models/option';
 import css from '~utils/css';
 import { importTemplateFileUrl } from '~utils/template';
 
 type ImportQuestionsProps = {
     onMutateSuccess: () => void;
     setShowPopUp: React.Dispatch<React.SetStateAction<boolean>>;
-    subjectId: string | number;
-    chapterOptions: Option[];
+
 };
 function ImportQuestions({
     onMutateSuccess,
     setShowPopUp,
-    subjectId,
-    chapterOptions,
 }: ImportQuestionsProps) {
     const language = useLanguage('component.import_questions');
     const [file, setFile] = useState<File>();
@@ -86,17 +81,7 @@ function ImportQuestions({
                     </div>
                 </div>
                 <form onSubmit={e => { mutation.mutate(e); }} className={styles.formData}>
-                    <input name='subject_id' value={subjectId} hidden readOnly />
-                    <div className={styles.groupInputs}>
-                        <div style={{ zIndex: 1 }} className={styles.wrapItem}>
-                            <label className={appStyles.required} htmlFor=''>{language?.chapter}</label>
-                            <CustomSelect
-                                name='chapter_id'
-                                defaultOption={chapterOptions[0]}
-                                options={chapterOptions}
-                            />
-                        </div>
-                    </div>
+
                     <div className={styles.dragArea}>
                         <label htmlFor='file'
                             onDragOver={(e) => {

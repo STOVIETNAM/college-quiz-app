@@ -8,22 +8,19 @@ import { BiImport } from 'react-icons/bi';
 import { RiAddFill } from 'react-icons/ri';
 import { Navigate, useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { apiGetQuestions } from '~api/question';
-import { apiGetSubjectById } from '~api/subject';
-import CustomSelect from '~components/CustomSelect';
 import Loading from '~components/Loading';
 import QUERY_KEYS from '~constants/query-keys';
 import useAppContext from '~hooks/useAppContext';
 import useDebounce from '~hooks/useDebounce';
 import useLanguage from '~hooks/useLanguage';
-import { SubjectDetail } from '~models/subject';
 import css from '~utils/css';
 import CreateQuestion from './components/CreateQuestion';
 import ImportQuestions from './components/ImportQuestions';
 import ViewQuestion from './components/ViewQuestion';
 
 export default function Questions() {
-    const { state } = useLocation() as { state: SubjectDetail | null; };
-    const [subjectDetail, setSubjectDetail] = useState(state);
+    // const { state } = useLocation() as { state:  null; };
+    // const [subjectDetail, setSubjectDetail] = useState(state);
     const [searchParams, setSearchParams] = useSearchParams();
     const [showCreatePopUp, setShowCreatePopUp] = useState(false);
     const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
@@ -38,46 +35,29 @@ export default function Questions() {
         queryKey: [
             QUERY_KEYS.PAGE_QUESTIONS,
             {
-                chapter: searchParams.get('chapter') || '10',
+                // chapter: '10',
                 search: queryDebounce
             },
         ],
         queryFn: () => apiGetQuestions({
-            subjectId: String(id),
-            chapterId: searchParams.get('chapter'),
             search: queryDebounce
         }),
-        enabled: permissions.has('question_view') && permissions.has('subject_view')
+        enabled: permissions.has('question_view')
     });
-    const chapterOptions = subjectDetail?.chapters.map(chapter => ({
-        value: String(chapter.id),
-        label: `${chapter.chapterNumber}. ${chapter.name}`
-    }));
-    useEffect(() => {
-        if (!permissions.has('subject_view')) return;
-        apiGetSubjectById(String(id)).then(res => {
-            setSubjectDetail(res);
-        });
-    }, [id, permissions]);
     useEffect(() => {
         if (!searchParams.get('search') && !queryDebounce) return;
         if (queryDebounce === '') searchParams.delete('search');
         else searchParams.set('search', queryDebounce);
         setSearchParams(searchParams);
     }, [queryDebounce, searchParams, setSearchParams]);
-    useEffect(() => {
-        if (language && subjectDetail) {
-            appTitle.setAppTitle(language.title.replace('@subject', subjectDetail.name));
-        }
-    }, [appTitle, language, subjectDetail]);
+
     if (!permissions.has('question_view') || !permissions.has('subject_view')) return <Navigate to='/' />;
-    if (!subjectDetail) return null;
+
     return (
         <>
             {showViewPopUp === true ?
                 <ViewQuestion
                     id={questionId}
-                    subjectDetail={subjectDetail}
                     setShowPopUp={setShowViewPopUp}
                     onMutateSuccess={() => { queryData.refetch(); }}
                 />
@@ -87,14 +67,12 @@ export default function Questions() {
                 <CreateQuestion
                     onMutateSuccess={() => { queryData.refetch(); }}
                     setShowPopUp={setShowCreatePopUp}
-                    subjectDetail={subjectDetail}
                 /> : null}
             {showImportPopUp === true ?
                 <ImportQuestions
                     onMutateSuccess={() => { queryData.refetch(); }}
                     setShowPopUp={setShowImportPopUp}
-                    subjectId={String(id)}
-                    chapterOptions={chapterOptions || []}
+
                 />
                 : null}
             <main className={appStyles.dashboard}>
@@ -133,32 +111,7 @@ export default function Questions() {
                         queryData.isLoading ? <Loading /> : null
                     }
                     <div className={styles.filterForm}>
-                        <div className={styles.wrapInputItem}>
-                            <label>{language?.filter.chapter}</label>
-                            <CustomSelect
-                                defaultOption={
-                                    {
-                                        label: language?.unselect,
-                                        value: ''
-                                    }
-                                }
-                                options={
-                                    [
-                                        {
-                                            label: language?.unselect,
-                                            value: ''
-                                        },
-                                        ...chapterOptions ?? []
-                                    ]
-                                }
-                                onChange={(option) => {
-                                    if (option.value != '') searchParams.set('chapter', option.value);
-                                    else searchParams.delete('chapter');
-                                    setSearchParams(searchParams);
-                                }}
-                                className={styles.customSelect}
-                            />
-                        </div>
+
                         <div className={styles.wrapInputItem}>
                             <label htmlFor="">{language?.filter.search}</label>
                             <input

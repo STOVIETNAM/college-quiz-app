@@ -25,6 +25,7 @@ class UpdateRequest extends FormRequest
     {
         $parameters = $this->route()->parameters;
         return [
+            'username' => ['required', 'string', 'unique:users,username,' . $parameters['id']],
             'shortcode' => ['required', 'string', 'unique:users,shortcode,' . $parameters['id'], 'max:255', 'alpha_dash:ascii'],
             'email' => ['required', 'email',  'unique:users,email,' . $parameters['id']],
             'first_name' => ['required', 'max:255'],

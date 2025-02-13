@@ -1,6 +1,6 @@
 import { PermissionWithPivot } from './permission';
 
-export type RoleName = 'student' | 'teacher' | 'admin';
+export type RoleName = 'employee' | 'manager' | 'admin';
 
 export type Role = {
     id: number;

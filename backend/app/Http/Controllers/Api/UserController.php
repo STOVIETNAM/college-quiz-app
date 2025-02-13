@@ -16,8 +16,6 @@ use App\Http\Requests\User\GetByTypeRequest;
 use App\Http\Requests\User\ImportRequest;
 use App\Http\Requests\User\StoreRequest;
 use App\Http\Requests\User\UpdateRequest;
-use App\Models\Faculty;
-use App\Models\SchoolClass;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -32,7 +30,7 @@ class UserController extends Controller
     public function index()
     {
         $data = (object)[];
-        $data->user = $this->getUser()->load(['role', 'school_class', 'faculty']);
+        $data->user = $this->getUser()->load(['role']);
         try {
             $data->permissions = $data->user->role->permissions()->pluck('name');
             return Reply::successWithData($data, '');
@@ -48,17 +46,11 @@ class UserController extends Controller
 
         DB::beginTransaction();
         try {
-            $data = collect($request->validated())->except(['role', 'school_class_id', 'faculty_id'])->toArray();
+            $data = collect($request->validated())->except(['role'])->toArray();
 
             $data['password'] = Hash::make($request->password);
             $data['role_id'] = RoleType::valueFromName($request->role);
-            if ($request->role == 'student') {
-                $data['school_class_id'] = $request->school_class_id;
-            }
 
-            if ($request->role == 'teacher') {
-                $data['faculty_id'] = $request->faculty_id;
-            }
             $data['birth_date'] = Carbon::parse($request->birth_date);
             User::create($data);
             DB::commit();
@@ -75,7 +67,7 @@ class UserController extends Controller
         abort_if(!$user->hasPermission(PermissionType::USER_VIEW) && $id != $user->id, 403);
 
         try {
-            $data = User::with(['role', 'school_class', 'faculty'])->findOrFail($id);
+            $data = User::with(['role'])->findOrFail($id);
             return Reply::successWithData($data, '');
         } catch (\Exception $error) {
             return $this->handleException($error);
@@ -95,7 +87,7 @@ class UserController extends Controller
                 return Reply::error(trans('app.errors.403'), 403);
             }
 
-            $data = collect($request->validated())->except(['password', 'school_class_id', 'faculty_id'])->toArray();
+            $data = collect($request->validated())->except(['password'])->toArray();
 
             if ($user->id == $id) $data['is_active'] = 1;
 
@@ -103,13 +95,13 @@ class UserController extends Controller
                 $data['password'] = Hash::make($request->password);
             }
 
-            if ($target_user->role_id == RoleType::STUDENT->value) {
-                $data['school_class_id'] = $request->school_class_id;
-            }
+            // if ($target_user->role_id == RoleType::EMPLOYEE->value) {
+            //     $data['school_class_id'] = $request->school_class_id;
+            // }
 
-            if ($target_user->role_id == RoleType::TEACHER->value) {
-                $data['faculty_id'] = $request->faculty_id;
-            }
+            // if ($target_user->role_id == RoleType::MANAGER->value) {
+            //     $data['faculty_id'] = $request->faculty_id;
+            // }
 
             if ($target_user->email != $data['email']) {
                 $data['email_verified_at'] = null;
@@ -150,15 +142,15 @@ class UserController extends Controller
         abort_if(!$user->hasPermission(PermissionType::USER_VIEW), 403);
 
         try {
-            $users = User::with(['role', 'school_class', 'faculty'])
+            $users = User::with(['role'])
                 ->where('role_id', '=', RoleType::valueFromName($request->role));
             // Filter
-            if ($request->school_class_id) {
-                $users = $users->where('school_class_id', $request->school_class_id);
-            }
-            if ($request->faculty_id) {
-                $users = $users->where('faculty_id', $request->faculty_id);
-            }
+            // if ($request->school_class_id) {
+            //     $users = $users->where('school_class_id', $request->school_class_id);
+            // }
+            // if ($request->faculty_id) {
+            //     $users = $users->where('faculty_id', $request->faculty_id);
+            // }
             if ($request->search != null) {
                 $users = $users->where(function ($query) use ($request) {
                     $query->whereFullText(User::FULLTEXT, $request->search);
@@ -210,17 +202,17 @@ class UserController extends Controller
                 }
                 $validated_record = $validated_result['data'];
 
-                if ($request->role == 'student') {
-                    $school_class_id = SchoolClass::where('shortcode', $row[0])->pluck('id')->first();
-                    $validated_record['school_class_id'] = $school_class_id;
-                    if ($school_class_id == null) $non_exists_classes[] = $row[0];
-                }
+                // if ($request->role == 'employee') {
+                //     $school_class_id = SchoolClass::where('shortcode', $row[0])->pluck('id')->first();
+                //     $validated_record['school_class_id'] = $school_class_id;
+                //     if ($school_class_id == null) $non_exists_classes[] = $row[0];
+                // }
 
-                if ($request->role == 'teacher') {
-                    $faculty_id = Faculty::where('shortcode', $row[0])->pluck('id')->first();
-                    $validated_record['faculty_id'] = $faculty_id;
-                    if ($faculty_id == null) $non_exists_faculties[] = $row[0];
-                }
+                // if ($request->role == 'manager') {
+                //     $faculty_id = Faculty::where('shortcode', $row[0])->pluck('id')->first();
+                //     $validated_record['faculty_id'] = $faculty_id;
+                //     if ($faculty_id == null) $non_exists_faculties[] = $row[0];
+                // }
 
                 $validated_record = collect($validated_record)->except(['role'])->toArray();
                 $validated_record['password'] = Hash::make($record['password']);
@@ -228,16 +220,16 @@ class UserController extends Controller
 
                 $data[] = $validated_record;
             }
-            if (count($non_exists_classes) != 0) {
-                return Reply::error(trans('app.errors.class_not_exists', [
-                    'shortcodes' => implode(', ', $non_exists_classes)
-                ]));
-            }
-            if (count($non_exists_faculties) != 0) {
-                return Reply::error(trans('app.errors.faculty_not_exists', [
-                    'shortcodes' => implode(', ', $non_exists_faculties)
-                ]));
-            }
+            // if (count($non_exists_classes) != 0) {
+            //     return Reply::error(trans('app.errors.class_not_exists', [
+            //         'shortcodes' => implode(', ', $non_exists_classes)
+            //     ]));
+            // }
+            // if (count($non_exists_faculties) != 0) {
+            //     return Reply::error(trans('app.errors.faculty_not_exists', [
+            //         'shortcodes' => implode(', ', $non_exists_faculties)
+            //     ]));
+            // }
 
             foreach ($data as $row) {
                 User::create($row);
@@ -259,8 +251,6 @@ class UserController extends Controller
         $fillable = $user->getFillable();
 
         $hiddens[] = 'role_id';
-        $hiddens[] = 'school_class_id';
-        $hiddens[] = 'faculty_id';
         $hiddens[] = 'is_active';
         $hiddens[] = 'email_verified_at';
 
@@ -277,19 +267,19 @@ class UserController extends Controller
             ];
         }
 
-        if ($request->role == 'student') {
-            $data[] = [
-                'field_name' => trans('headers.school_class.shortcode'),
-                'field' => 'school_class.shortcode'
-            ];
-        }
+        // if ($request->role == 'employee') {
+        //     $data[] = [
+        //         'field_name' => trans('headers.school_class.shortcode'),
+        //         'field' => 'school_class.shortcode'
+        //     ];
+        // }
 
-        if ($request->role == 'teacher') {
-            $data[] = [
-                'field_name' => trans('headers.faculty.shortcode'),
-                'field' => 'faculty.shortcode'
-            ];
-        }
+        // if ($request->role == 'manager') {
+        //     $data[] = [
+        //         'field_name' => trans('headers.faculty.shortcode'),
+        //         'field' => 'faculty.shortcode'
+        //     ];
+        // }
         return Reply::successWithData($data, '');
     }
 
@@ -301,15 +291,15 @@ class UserController extends Controller
 
         try {
             $query = User::where('role_id', '=', RoleType::valueFromName($data['role']));
-            if ($data['role'] == 'student') $query = $query->with('school_class');
-            if ($data['role'] == 'teacher') $query = $query->with('faculty');
+            // if ($data['role'] == 'employee') $query = $query->with('school_class');
+            // if ($data['role'] == 'manager') $query = $query->with('faculty');
 
-            if ($request->school_class_id) {
-                $query = $query->where('school_class_id', $request->school_class_id);
-            }
-            if ($request->faculty_id) {
-                $query = $query->where('faculty_id', $request->faculty_id);
-            }
+            // if ($request->school_class_id) {
+            //     $query = $query->where('school_class_id', $request->school_class_id);
+            // }
+            // if ($request->faculty_id) {
+            //     $query = $query->where('faculty_id', $request->faculty_id);
+            // }
             if ($request->search != null) {
                 $query = $query->where(function ($query) use ($request) {
                     $query->whereFullText(User::FULLTEXT, $request->search);
@@ -357,7 +347,7 @@ class UserController extends Controller
         abort_if(!$user->hasPermission(PermissionType::USER_VIEW), 403);
 
         try {
-            $users = User::with(['role', 'school_class', 'faculty'])
+            $users = User::with(['role'])
                 ->where('role_id', '=', RoleType::valueFromName($request->role))
                 ->latest('id');
             if ($request->search) {
@@ -374,10 +364,7 @@ class UserController extends Controller
     public function validateUserArray($record)
     {
         $store_request = new StoreRequest();
-        $rules = collect($store_request->rules())->except([
-            'school_class_id',
-            'faculty_id'
-        ])->toArray();
+        $rules = collect($store_request->rules())->toArray();
         $validator = Validator::make($record, $rules);
 
         if ($validator->fails()) {

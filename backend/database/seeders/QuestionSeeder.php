@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Chapter;
 use App\Models\Question;
 use App\Models\QuestionOption;
-use App\Models\Subject;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -19,10 +17,6 @@ class QuestionSeeder extends Seeder
         $dir = base_path('/dump/questions/');
         $questions = [];
         $levels = ['easy', 'medium', 'hard', 'expert'];
-        $subject_id = Subject::where('shortcode', '=', 'AV226')
-            ->select('id')
-            ->firstOrFail()->id;
-        $chapter_ids = Chapter::where('subject_id', '=', $subject_id)->pluck('id')->toArray();
 
         if (is_dir($dir)) {
             $files = scandir($dir);
@@ -35,9 +29,8 @@ class QuestionSeeder extends Seeder
         foreach ($questions as $question) {
             $created_question = Question::create([
                 'content' => $question->content,
-                'subject_id' => $subject_id,
                 'level' => $levels[array_rand($levels)],
-                'chapter_id' => $chapter_ids[array_rand($chapter_ids)]
+
             ]);
             foreach ($question->answers as $answer) {
                 QuestionOption::create([

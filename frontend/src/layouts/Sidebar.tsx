@@ -5,21 +5,14 @@ import {
     AiOutlineUser
 } from 'react-icons/ai';
 import { IoSettingsOutline } from 'react-icons/io5';
-import { LuSchool } from 'react-icons/lu';
-import { MdOutlineStickyNote2 } from 'react-icons/md';
 import {
-    PiBooks,
     PiChalkboardTeacherLight,
     PiExam,
-    PiStudent,
 } from 'react-icons/pi';
 import { RiAdminLine } from 'react-icons/ri';
 import {
     RxDashboard
 } from 'react-icons/rx';
-import {
-    SiGoogleclassroom
-} from 'react-icons/si';
 import { TbBrandAuth0 } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
 import { API_HOST } from '~config/env';
@@ -47,46 +40,10 @@ export default function Sidebar() {
             isActive: true
         },
         {
-            name: language?.admins,
-            to: 'admins',
-            icon: <RiAdminLine />,
-            isActive: permissions.has('user_view')
-        },
-        {
-            name: language?.teachers,
-            to: 'teachers',
+            name: language?.questions,
+            to: 'questions',
             icon: <PiChalkboardTeacherLight />,
-            isActive: permissions.has('user_view')
-        },
-        {
-            name: language?.students,
-            to: 'students',
-            icon: <PiStudent />,
-            isActive: permissions.has('user_view')
-        },
-        {
-            name: language?.subjects,
-            to: 'subjects',
-            icon: <PiBooks />,
-            isActive: permissions.has('subject_view')
-        },
-        {
-            name: language?.faculty,
-            to: 'faculties',
-            icon: <LuSchool />,
-            isActive: permissions.has('faculty_view')
-        },
-        {
-            name: language?.schoolClass,
-            to: 'school-classes',
-            icon: <SiGoogleclassroom />,
-            isActive: permissions.has('school_class_view')
-        },
-        {
-            name: language?.semester,
-            to: 'semesters',
-            icon: <MdOutlineStickyNote2 />,
-            isActive: permissions.has('semester_view')
+            isActive: permissions.has('question_view')
         },
         {
             name: language?.exams,

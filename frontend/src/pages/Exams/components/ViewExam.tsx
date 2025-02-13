@@ -48,8 +48,8 @@ export default function ViewExam({
         queryFn: () => apiGetExamById(id),
     });
     const userQueryData = useQuery({
-        queryKey: [QUERY_KEYS.ALL_TEACHER, { search: debounceQueryUser }],
-        queryFn: () => apiGetAllUser('teacher', debounceQueryUser),
+        queryKey: [QUERY_KEYS.ALL_MANAGER, { search: debounceQueryUser }],
+        queryFn: () => apiGetAllUser('manager', debounceQueryUser),
         enabled: permissions.has('user_view') ? true : false
     });
     const handleUpdateExam = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -89,7 +89,7 @@ export default function ViewExam({
     useEffect(() => {
         return () => {
             queryClient.removeQueries({ queryKey: [QUERY_KEYS.EXAM, { id: id }] });
-            queryClient.removeQueries({ queryKey: [QUERY_KEYS.ALL_TEACHER] });
+            queryClient.removeQueries({ queryKey: [QUERY_KEYS.ALL_MANAGER] });
         };
     }, [id, queryClient]);
     return (
@@ -190,39 +190,7 @@ export default function ViewExam({
                                                                     type='text' />
                                                                 : null
                                                         }
-                                                        <label>{language?.supervisors}</label>
-                                                        <ul className={styles.joinedSupervisorsContainer}>
-                                                            {
-                                                                supervisors.map((supervisor, index) => {
-                                                                    return (
-                                                                        <li
-                                                                            className={styles.joinedSupervisor}
-                                                                            key={`joined-supervisor-${supervisor.id}`}
-                                                                        >
-                                                                            <div>
-                                                                                <span>
-                                                                                    {languageUtils.getFullName(supervisor.firstName, supervisor.lastName)}
-                                                                                </span>
-                                                                                {/* <span>
-																			{supervisor.faculty?.name}
-																		</span> */}
-                                                                                <span
-                                                                                    style={{ height: '20px' }}
-                                                                                    onClick={() => {
-                                                                                        if (!permissions.has('exam_update')) return;
-                                                                                        const newSupervisors = structuredClone(supervisors);
-                                                                                        newSupervisors.splice(index, 1);
-                                                                                        setSupervisors(newSupervisors);
-                                                                                    }}
-                                                                                >
-                                                                                    <RxCross2 />
-                                                                                </span>
-                                                                            </div>
-                                                                        </li>
-                                                                    );
-                                                                })
-                                                            }
-                                                        </ul>
+
                                                         {
                                                             permissions.has('user_view') ?
                                                                 <>

@@ -13,6 +13,6 @@ enum RoleType: int
     use EnumResolver;
 
     case ADMIN = 1;
-    case TEACHER = 2;
-    case STUDENT = 3;
+    case MANAGER = 2;
+    case EMPLOYEE = 3;
 }

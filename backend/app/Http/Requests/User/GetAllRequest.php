@@ -24,7 +24,7 @@ class GetAllRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role' => ['required', 'in:student,teacher']
+            'role' => ['required', 'in:employee,manager']
         ];
     }
 }

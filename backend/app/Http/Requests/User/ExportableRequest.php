@@ -24,7 +24,7 @@ class ExportableRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role' => ['required', 'string', 'in:student,teacher'],
+            'role' => ['required', 'string', 'in:employee,manager'],
         ];
     }
 }

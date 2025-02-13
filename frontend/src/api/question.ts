@@ -12,8 +12,6 @@ export async function apiGetQuestions(query: QueryQuestionType) {
         const apiPath = prefix;
         const res = await request.get(apiPath, {
             params: {
-                subject_id: query.subjectId,
-                chapter_id: query.chapterId,
                 search: query.search
             }
         });

@@ -17,6 +17,7 @@ class AdminSeeder extends Seeder
     {
         $first_name = $this->command->ask('What is the user\'s first name?');
         $last_name = $this->command->ask('What is the user\'s last name?');
+        $user_name = $this->command->ask('What is the username?');
         $email = $this->command->ask('What is the user\'s email?');
         $birth_date = $this->command->ask('What is the user\'s birth date? (YYYY-MM-DD)');
         $gender = $this->command->choice('What is the user\'s gender?', ['male', 'female']);
@@ -28,6 +29,7 @@ class AdminSeeder extends Seeder
             'shortcode' => 'SYSADMIN',
             'first_name' => $first_name,
             'last_name' => $last_name,
+            'username' => $user_name,
             'email' => $email,
             'gender' => $gender,
             'address' => $address,

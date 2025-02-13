@@ -5,50 +5,48 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { FiSave } from 'react-icons/fi';
 import { RxCross2 } from 'react-icons/rx';
-import { toast } from 'sonner';
+// import { toast } from 'sonner';
 import { apiCreateExam } from '~api/exam';
-import { apiGetSubjectById } from '~api/subject';
+import { apiGetQuestions } from '~api/question';
 import { apiGetAllUser } from '~api/user';
 import Loading from '~components/Loading';
 import { AUTO_COMPLETE_DEBOUNCE } from '~config/env';
 import QUERY_KEYS from '~constants/query-keys';
 import useDebounce from '~hooks/useDebounce';
 import useLanguage from '~hooks/useLanguage';
-import { CourseDetail } from '~models/course';
-import { UserDetail } from '~models/user';
+// import { UserDetail } from '~models/user';
 import createFormUtils from '~utils/createFormUtils';
 import css from '~utils/css';
 import dateFormat from '~utils/date-format';
-import languageUtils from '~utils/languageUtils';
+// import languageUtils from '~utils/languageUtils';
 
 type CreateExamProps = {
-    courseDetail: CourseDetail;
     onMutateSuccess: () => void;
     setShowPopUp: React.Dispatch<React.SetStateAction<boolean>>;
 };
 export default function CreateExam({
-    courseDetail,
+
     onMutateSuccess,
     setShowPopUp
 }: CreateExamProps) {
-    const [totalQuestion, setTotalQuestion] = useState(0);
-    const [supervisors, setSupervisors] = useState<UserDetail[]>([]);
+    const [totalQuestion] = useState(0);
+    //const [supervisors, setSupervisors] = useState<UserDetail[]>([]);
     const [queryUser, setQueryUser] = useState('');
-    const debounceQueryUser = useDebounce(queryUser, AUTO_COMPLETE_DEBOUNCE);
+    // const debounceQueryUser = useDebounce(queryUser, AUTO_COMPLETE_DEBOUNCE);
     const language = useLanguage('component.create_exam');
     const queryClient = useQueryClient();
+    const queryData = useQuery({
+        queryKey: [QUERY_KEYS.PAGE_QUESTIONS],
+        queryFn: () => apiGetQuestions({ search: '' }),
+    });
     const handleClosePopUp = () => {
         setShowPopUp(false);
     };
     const formUtils = createFormUtils(styles);
-    const queryData = useQuery({
-        queryKey: [QUERY_KEYS.PAGE_SUBJECT, { id: courseDetail.subjectId }],
-        queryFn: () => apiGetSubjectById(courseDetail.subjectId)
-    });
-    const userQueryData = useQuery({
-        queryKey: [QUERY_KEYS.ALL_TEACHER, { search: debounceQueryUser }],
-        queryFn: () => apiGetAllUser('teacher', debounceQueryUser),
-    });
+    // const userQueryData = useQuery({
+    //     queryKey: [QUERY_KEYS.ALL_MANAGER, { search: debounceQueryUser }],
+    //     queryFn: () => apiGetAllUser('manager', debounceQueryUser),
+    // });
     const handleCreateExam = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         document.querySelector(`.${styles.formData}`)?.querySelectorAll<HTMLInputElement>('input[name]').forEach(node => {
@@ -57,9 +55,9 @@ export default function CreateExam({
         });
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
-        supervisors.forEach(supervisor => {
-            formData.append('supervisor_ids[]', String(supervisor.id));
-        });
+        // supervisors.forEach(supervisor => {
+        //     formData.append('supervisor_ids[]', String(supervisor.id));
+        // });
         await apiCreateExam(formData);
         handleClosePopUp();
     };
@@ -70,7 +68,7 @@ export default function CreateExam({
     });
     useEffect(() => {
         return () => {
-            queryClient.removeQueries({ queryKey: [QUERY_KEYS.ALL_TEACHER] });
+            queryClient.removeQueries({ queryKey: [QUERY_KEYS.ALL_MANAGER] });
         };
     }, [queryClient]);
     return (
@@ -80,9 +78,7 @@ export default function CreateExam({
                     styles.createViewExamContainer,
                 )
             }>
-                {
-                    queryData.isLoading ? <Loading /> : null
-                }
+
                 {
                     isPending ? <Loading /> : null
                 }
@@ -103,7 +99,6 @@ export default function CreateExam({
                         <form
                             onSubmit={e => { mutate(e); }}
                             className={styles.formData}>
-                            <input hidden readOnly name='course_id' value={courseDetail.id} />
                             <div className={styles.groupInputs}>
                                 <div className={styles.wrapItem}>
                                     <label className={appStyles.required} htmlFor='name'>{language?.name}</label>
@@ -140,44 +135,6 @@ export default function CreateExam({
                                 {
                                     queryData.data ?
                                         <>
-                                            {queryData.data.chapters.sort((a, b) =>
-                                                a.chapterNumber - b.chapterNumber
-                                            ).map(chapter => {
-                                                const key = `chapter-${chapter.id}`;
-                                                return (
-                                                    <div
-                                                        className={styles.wrapItem}
-                                                        key={key}
-                                                    >
-                                                        <label htmlFor={key}>
-                                                            {`${chapter.chapterNumber}. ${chapter.name} (${chapter.questionsCount} ${language?.questions})`}
-                                                        </label>
-                                                        <input
-                                                            id={key}
-                                                            onInput={(e) => {
-                                                                const target = e.currentTarget;
-                                                                if (target.valueAsNumber > chapter.questionsCount) {
-                                                                    toast.error(language?.maxChapterQuestionCount
-                                                                        .replace('@name', `${chapter.chapterNumber}. ${chapter.name}`)
-                                                                        .replace('@questionNumber', String(chapter.questionsCount)));
-                                                                }
-                                                                const total = Array.from(document.querySelectorAll<HTMLInputElement>('input[name="question_counts[]"]'))
-                                                                    .reduce((total, current) => {
-                                                                        return current.valueAsNumber ? total += current.valueAsNumber : total;
-                                                                    }, 0);
-                                                                setTotalQuestion(total);
-                                                            }}
-                                                            name='question_counts[]'
-                                                            onBeforeInput={(e: React.CompositionEvent<HTMLInputElement>) => {
-                                                                if (e.data === '.') e.preventDefault();
-                                                            }}
-                                                            className={css(appStyles.input, styles.inputItem)}
-                                                            type='number'
-                                                            min={0}
-                                                        />
-                                                    </div>
-                                                );
-                                            })}
                                             <div className={styles.wrapItem}>
                                                 <span>{language?.totalQuestions}: {totalQuestion}</span>
                                             </div>
@@ -217,58 +174,7 @@ export default function CreateExam({
                                                     }}
                                                     className={css(appStyles.input, styles.inputItem)}
                                                     type='text' />
-                                                <label>{language?.joinedSupervisors}</label>
-                                                <ul className={styles.joinedSupervisorsContainer}>
-                                                    {
-                                                        supervisors.map((supervisor, index) => {
-                                                            return (
-                                                                <li
-                                                                    className={styles.joinedSupervisor}
-                                                                    key={`joined-supervisor-${supervisor.id}`}
-                                                                >
-                                                                    <div>
-                                                                        <span>
-                                                                            {languageUtils.getFullName(supervisor.firstName, supervisor.lastName)}
-                                                                        </span>
-                                                                        <span
-                                                                            style={{ height: '20px' }}
-                                                                            onClick={() => {
-                                                                                const newSupervisors = structuredClone(supervisors);
-                                                                                newSupervisors.splice(index, 1);
-                                                                                setSupervisors(newSupervisors);
-                                                                            }}
-                                                                        >
-                                                                            <RxCross2 />
-                                                                        </span>
-                                                                    </div>
-                                                                </li>
-                                                            );
-                                                        })
-                                                    }
-                                                </ul>
-                                                <label>{language?.allSupervisors}</label>
-                                                <ul className={styles.allSupervisorConatiner}>
-                                                    {userQueryData.data ?
-                                                        userQueryData.data
-                                                            .filter(user => !supervisors.find(supervisor => supervisor.id === user.id))
-                                                            .map(user => (
-                                                                <li
-                                                                    onClick={() => {
-                                                                        const newSupervisors = structuredClone(supervisors);
-                                                                        newSupervisors.push(user);
-                                                                        setSupervisors(newSupervisors);
-                                                                    }}
-                                                                    className={css(appStyles.dashboardCard, styles.card)}
-                                                                    key={`user-${user.id}`}
-                                                                >
-                                                                    <div className={styles.cardLeft}>
-                                                                        <span>{languageUtils.getFullName(user.firstName, user.lastName)}</span>
-                                                                        <span>{user.faculty?.name}</span>
-                                                                    </div>
-                                                                </li>
-                                                            )) : null
-                                                    }
-                                                </ul>
+
                                             </div>
                                         </> : null
                                 }

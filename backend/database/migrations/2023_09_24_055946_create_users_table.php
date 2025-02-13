@@ -22,13 +22,12 @@ return new class extends Migration
             $table->enum('gender', ['male', 'female'])->default('male');
             $table->string('address');
             $table->date('birth_date');
-            $table->unsignedBigInteger('school_class_id')->nullable();
-            $table->unsignedBigInteger('faculty_id')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->datetimes();
+            $table->string('username')->unique();
             $table->foreign('role_id')->references('id')->on('roles')->cascadeOnDelete();
 
             $table->fullText([
